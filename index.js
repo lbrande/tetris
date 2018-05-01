@@ -103,7 +103,7 @@ function Tetris(boardWidth, boardHeight) {
                 }
             }
             if (isFull) {
-                for (var j = 0; j < this.board.length; j++) {
+                for (j = 0; j < this.board.length; j++) {
                     for (var k = i; k > 0; k--) {
                         this.board[j][k] = this.board[j][k-1];
                     }
