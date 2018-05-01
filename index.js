@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
-    width: 320,
-    height: 640,
+    width: 300,
+    height: 600,
     scene: {
         preload: preload,
         create: create,
@@ -11,8 +11,8 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-pentominoColors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff,
-    0xff8000, 0xff0080, 0x00ff80, 0x80ff00, 0x8000ff, 0x0080ff];
+pentominoColors = [0xff0000, 0xff8000, 0xffff00, 0x80ff00, 0x00ff00, 0x00ff80,
+    0x00ffff, 0x0080ff, 0x0000ff, 0x8000ff, 0xff00ff, 0xff0080];
 
 pentominoPieces = [[{x: 0, y: -2}, {x: 0, y: -1}, {x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}],
     [{x: -1, y: 1}, {x: 0, y: -1}, {x: 0, y: 0}, {x: 0, y: 1}, {x: 1, y: 0}],
@@ -54,6 +54,7 @@ function Tetris(boardWidth, boardHeight) {
             this.board[i][j] = -1;
         }
     }
+    this.clearedRows = 0;
     this.gameOver = false;
 
     this.spawnPiece = function () {
@@ -103,13 +104,16 @@ function Tetris(boardWidth, boardHeight) {
                 }
             }
             if (isFull) {
+                this.clearedRows++;
+                timer.delay *= 0.9;
+                scoreText.setText(this.clearedRows);
                 for (j = 0; j < this.board.length; j++) {
                     for (var k = i; k > 0; k--) {
-                        this.board[j][k] = this.board[j][k-1];
+                        this.board[j][k] = this.board[j][k - 1];
                     }
                     this.board[j][0] = -1;
                 }
-                i--;
+                i++;
             }
         }
     };
@@ -214,16 +218,18 @@ function Tetris(boardWidth, boardHeight) {
     };
 }
 
-var tetris, graphics, timer, lastKeyDownTimestamp = -100;
+var tetris, graphics, scoreText, timer, lastKeyDownTimestamp = -100;
 
 function preload() {
 
 }
 
 function create() {
-    tetris = new Tetris(16, 32);
+    tetris = new Tetris(12, 24);
 
     graphics = this.add.graphics({lineStyle: {color: 0xffffff}});
+
+    scoreText = this.add.text(0, 0, 0, {fontSize: 50});
 
     timer = this.time.addEvent({delay: 500, callback: tick, loop: true});
 
