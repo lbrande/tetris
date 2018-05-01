@@ -88,7 +88,29 @@ function Tetris(boardWidth, boardHeight) {
                 this.board[this.currentPiece.center.x + this.currentPiece.blocks[i].x]
                     [this.currentPiece.center.y + this.currentPiece.blocks[i].y] = this.currentPiece.type;
             }
+            this.clearRows();
             this.spawnPiece();
+        }
+    };
+
+    this.clearRows = function () {
+        for (var i = this.board[0].length - 1; i >= 0; i--) {
+            var isFull = true;
+            for (var j = 0; j < this.board.length; j++) {
+                if (this.board[j][i] === -1) {
+                    isFull = false;
+                    break;
+                }
+            }
+            if (isFull) {
+                for (var j = 0; j < this.board.length; j++) {
+                    for (var k = i; k > 0; k--) {
+                        this.board[j][k] = this.board[j][k-1];
+                    }
+                    this.board[j][0] = -1;
+                }
+                i--;
+            }
         }
     };
 
@@ -166,15 +188,16 @@ function Tetris(boardWidth, boardHeight) {
 
     this.flip = function () {
         for (var i = 0; i < this.currentPiece.blocks.length; i++) {
-            if (this.currentPiece.center.y - this.currentPiece.blocks[i].y >= 0 &&
-                (this.currentPiece.center.y - this.currentPiece.blocks[i].y >= this.board[0].length ||
-                    this.board[this.currentPiece.center.x + this.currentPiece.blocks[i].x]
-                        [this.currentPiece.center.y - this.currentPiece.blocks[i].y] !== -1)) {
+            if (this.currentPiece.center.y + this.currentPiece.blocks[i].y >= 0 &&
+                (this.currentPiece.center.x - this.currentPiece.blocks[i].x < 0 ||
+                    this.currentPiece.center.x - this.currentPiece.blocks[i].x >= this.board.length ||
+                    this.board[this.currentPiece.center.x - this.currentPiece.blocks[i].x]
+                        [this.currentPiece.center.y + this.currentPiece.blocks[i].y] !== -1)) {
                 return
             }
         }
         for (i = 0; i < this.currentPiece.blocks.length; i++) {
-            this.currentPiece.blocks[i].y = -this.currentPiece.blocks[i].y;
+            this.currentPiece.blocks[i].x = -this.currentPiece.blocks[i].x;
         }
     };
 
