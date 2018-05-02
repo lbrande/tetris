@@ -218,23 +218,30 @@ function Tetris(boardWidth, boardHeight) {
     };
 }
 
-var tetris, graphics, scoreText, timer, lastKeyDownTimestamp = -100;
+var tetris, graphics, infoText, scoreText, timer, lastKeyDownTimestamp = -100;
 
 function preload() {
 
 }
 
 function create() {
-    tetris = new Tetris(12, 24);
-
     graphics = this.add.graphics({lineStyle: {color: 0xffffff}});
 
+    infoText = this.add.text(config.width / 2, config.height / 2, "Press a Key!", {fontSize: 25});
+    infoText.setOrigin(0.5);
+
     scoreText = this.add.text(0, 0, 0, {fontSize: 50});
+    scoreText.visible = false;
 
     timer = this.time.addEvent({delay: 500, callback: tick, loop: true});
 
     this.input.keyboard.on('keydown', function (event) {
-        if (event.timeStamp - 10 > lastKeyDownTimestamp) {
+        if (tetris == null) {
+            tetris = new Tetris(12, 24);
+            infoText.visible = false;
+            scoreText.visible = true;
+        }
+        else if (event.timeStamp - 10 > lastKeyDownTimestamp) {
             if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.S) {
                 tetris.moveDown();
                 lastKeyDownTimestamp = event.timeStamp;
@@ -268,15 +275,21 @@ function create() {
 function update() {
     graphics.clear();
 
-    tetris.draw(config.width / tetris.board.length, graphics);
+    if (tetris != null) {
+        tetris.draw(config.width / tetris.board.length, graphics);
+    }
 
     graphics.strokeRect(0, 0, config.width, config.height);
 }
 
 function tick() {
-    tetris.tick();
+    if (tetris != null) {
+        tetris.tick();
 
-    if (tetris.gameOver) {
-        timer.remove(false);
+        if (tetris.gameOver) {
+            timer.remove(false);
+            infoText.setText("Game Over!");
+            infoText.visible = true;
+        }
     }
 }
