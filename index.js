@@ -236,37 +236,29 @@ function create() {
     timer = this.time.addEvent({delay: 500, callback: tick, loop: true});
 
     this.input.keyboard.on('keydown', function (event) {
-        if (tetris == null) {
+        if (tetris === null) {
             tetris = new Tetris(12, 24);
             infoText.visible = false;
             scoreText.visible = true;
-        }
-        else if (event.timeStamp - 10 > lastKeyDownTimestamp) {
+        } else if (event.timeStamp - 10 > lastKeyDownTimestamp) {
             if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.S) {
                 tetris.moveDown();
                 lastKeyDownTimestamp = event.timeStamp;
-            }
-            else if (event.timeStamp - 100 > lastKeyDownTimestamp) {
-                if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.A) {
-                    tetris.moveLeft();
-                    lastKeyDownTimestamp = event.timeStamp;
-                }
-                else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.D) {
-                    tetris.moveRight();
-                    lastKeyDownTimestamp = event.timeStamp;
-                }
-                else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.Q) {
-                    tetris.rotateLeft();
-                    lastKeyDownTimestamp = event.timeStamp;
-                }
-                else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.E) {
-                    tetris.rotateRight();
-                    lastKeyDownTimestamp = event.timeStamp;
-                }
-                else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.W) {
-                    tetris.flip();
-                    lastKeyDownTimestamp = event.timeStamp;
-                }
+            } else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.A) {
+                tetris.moveLeft();
+                lastKeyDownTimestamp = event.timeStamp;
+            } else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.D) {
+                tetris.moveRight();
+                lastKeyDownTimestamp = event.timeStamp;
+            } else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.Q) {
+                tetris.rotateLeft();
+                lastKeyDownTimestamp = event.timeStamp;
+            } else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.E) {
+                tetris.rotateRight();
+                lastKeyDownTimestamp = event.timeStamp;
+            } else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.W) {
+                tetris.flip();
+                lastKeyDownTimestamp = event.timeStamp;
             }
         }
     });
@@ -275,7 +267,7 @@ function create() {
 function update() {
     graphics.clear();
 
-    if (tetris != null) {
+    if (tetris !== null) {
         tetris.draw(config.width / tetris.board.length, graphics);
     }
 
@@ -283,7 +275,7 @@ function update() {
 }
 
 function tick() {
-    if (tetris != null) {
+    if (tetris !== null) {
         tetris.tick();
 
         if (tetris.gameOver) {
