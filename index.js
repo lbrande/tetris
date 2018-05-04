@@ -218,7 +218,7 @@ function Tetris(boardWidth, boardHeight) {
     };
 }
 
-var tetris, graphics, infoText, scoreText, timer, lastKeyDownTimestamp = -100;
+var tetris = null, graphics, infoText, scoreText, timer, lastKeyDownTimestamp = -100;
 
 function preload() {
 
